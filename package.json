@@ -1,0 +1,17 @@
+{
+  "name": "projeto-hospital",
+  "version": "1.0.0",
+  "description": "Projeto de cadastro de pacientes em Solidity",
+  "main": "truffle-config.js",
+  "scripts": {
+    "test": "truffle test",
+    "compile": "truffle compile",
+    "migrate": "truffle migrate",
+    "deploy": "truffle migrate --reset"
+  },
+  "author": "Vinicius e Rafael",
+  "license": "MIT",
+  "devDependencies": {
+    "truffle": "^5.11.5"
+  }
+}
