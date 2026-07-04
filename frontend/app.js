@@ -1,8 +1,9 @@
-const contractAddress = "0xa10616c2fa06ddf98836f2088A508377af9F2d01";
+const contractAddress = "0xa0Ec28D6A4B45922EB4Cc1d427E888aBFD6d26Ac";
 const contractABI = [
   "function cadastrarPaciente(string nome, string cpf, uint256 idade, string enderecoResidencial) external",
-  "function consultarPaciente(string cpf) external view returns (string nome, string cpf, uint256 idade, string enderecoResidencial)"
+  "function consultarPaciente(string cpf) external view returns (string, string, uint256, string)"
 ];
+
 
 const { createApp } = Vue;
 
@@ -100,7 +101,8 @@ createApp({
 
       try {
         const provider = new ethers.JsonRpcProvider("http://127.0.0.1:7545");
-        const contract = new ethers.Contract(contractAddress, contractABI, provider);
+        const signer = await provider.getSigner();
+        const contract = new ethers.Contract(contractAddress, contractABI, signer);
 
         const resultado = await contract.consultarPaciente(cpfLimpo);
         this.pacienteConsultado = {
@@ -110,10 +112,16 @@ createApp({
           enderecoResidencial: resultado[3]
         };
       } catch (error) {
-        if (error.message.includes('Paciente nao encontrado')) {
+        console.error("Erro completo ao consultar paciente:", error);
+        
+        const errorMessage = error.message || "";
+        const errorReason = error.reason || "";
+        
+        if (errorMessage.includes('Paciente nao encontrado') || errorReason.includes('Paciente nao encontrado')) {
           this.errorMessage = "Paciente não encontrado no Ganache.";
         } else {
-          this.errorMessage = "Erro de conexão ou consulta.";
+          // Exibe o erro real na tela para que o usuário não precise adivinhar
+          this.errorMessage = `Erro de conexão ou consulta: ${errorReason || errorMessage || "Erro desconhecido"}.`;
         }
       }
     },
