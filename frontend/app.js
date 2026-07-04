@@ -120,7 +120,6 @@ createApp({
         if (errorMessage.includes('Paciente nao encontrado') || errorReason.includes('Paciente nao encontrado')) {
           this.errorMessage = "Paciente não encontrado no Ganache.";
         } else {
-          // Exibe o erro real na tela para que o usuário não precise adivinhar
           this.errorMessage = `Erro de conexão ou consulta: ${errorReason || errorMessage || "Erro desconhecido"}.`;
         }
       }
